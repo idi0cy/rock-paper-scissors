@@ -13,67 +13,101 @@ function GrabCompInput() {
 
 let round = 1
 
-function PlayRound(computerchoice, round) {
-    let playerinput = prompt("You are playing rock paper scissors, round " + round + " of five. Please make your selection (r/p/s): ")
-    playerinput.toLowerCase()
+function PlayRound(round, playerinput) {
     let winner = ""
-    if (playerinput === "r" && computerchoice === "s") {
+    let computerinput = GrabCompInput()
+    if (playerinput === "r" && computerinput === "s") {
         winner = "player"
         
-    } else if (playerinput === "p" && computerchoice === "r") {
+    } else if (playerinput === "p" && computerinput === "r") {
         winner = "player"
-    } else if (playerinput === "s" && computerchoice === "p") {
+    } else if (playerinput === "s" && computerinput === "p") {
         winner = "player"
-    } else if (playerinput === computerchoice) {
+    } else if (playerinput === computerinput) {
         winner = "draw"
     } else {
         winner = "computer"
     }
 
+    const textDisplay = document.querySelector("#textDisplay")
+
     if (winner === "computer") {
-        console.log("This round was won by the computer. One point will be awarded to the computer.")
+        console.log("Round " + round + " was won by the computer. One point will be awarded to the computer.")
+        let result = document.createElement("div")
+        result.classList.add("result")
+        result.textContent = "Round " + round + " was won by the computer. One point will be awarded to the computer."
+        textDisplay.appendChild(result)
         return "c"
     } else if (winner === "player") {
-        console.log("This round was won by the player. One point will be awarded to the player.")
+        console.log("Round " + round + " was won by the player. One point will be awarded to the player.")
+        let result = document.createElement("div")
+        result.classList.add("result")
+        result.textContent = "Round " + round + " was won by the player. One point will be awarded to the player."
+        textDisplay.appendChild(result)
         return "p"
     } else if (winner === "draw") {
-        console.log("This round was a draw! No points will be awarded")
+        console.log("Round " + round +" was a draw! No points will be aw arded.")
+        let result = document.createElement("div")
+        result.classList.add("result")
+        result.textContent = "Round " + round +" was a draw! No points will be awarded."
+        textDisplay.appendChild(result)
         return 0
     }
 }
 
-function PlayGame(round) {
-    player_score = 0
-    computer_score = 0
-    while (round < 6){
-        let computerinput = GrabCompInput()
-        let result = PlayRound(computerinput, round)
+const btnRock = document.querySelector("#rock")
+const btnPaper = document.querySelector("#paper")
+const btnScissors = document.querySelector("#scissors")
 
-        if (result === "c") {
-            computer_score += 1
-        } else if (result === "p") {
-            player_score += 1
-        }
+let pScore = 0
+let cScore = 0
 
-        round += 1
-    }
+const textDisplay = document.querySelector("#textDisplay")
+
+btnRock.addEventListener('click', function(){
+    textDisplay.replaceChildren()
+    let scoreAdd = PlayRound(round, "r")
+
+    if (scoreAdd === "p"){
+        pScore = pScore + 1
+    } else if (scoreAdd === "c"){
+        cScore = cScore + 1
+    } 
+
+    let score = document.createElement("p")
+    score.classList.add("score")
+    score.textContent = "Player score: " + pScore + " | Computer score: " + cScore
+    textDisplay.appendChild(score)
+})
+
+btnPaper.addEventListener('click', function(){
+    textDisplay.replaceChildren()
+    let scoreAdd = PlayRound(round, "p")
     
-    console.log("The game has ended. Counting points...")
+    if (scoreAdd === "p"){
+        pScore = pScore + 1
+    } else if (scoreAdd === "c"){
+        cScore = cScore + 1
+    } 
 
-    if (player_score > computer_score){
-        console.log("Player has won. Player score: " + player_score + "| computer score: " + computer_score)
-    } else if (computer_score > player_score) {
-        console.log("Computer has won. Player score: " + player_score + "| computer score: " + computer_score)
-    }   else {
-        console.log("The game was a draw. Player score: " + player_score + "| computer score: " + computer_score)
-    }
+    let score = document.createElement("p")
+    score.classList.add("score")
+    score.textContent = "Player score: " + pScore + " | Computer score: " + cScore
+    textDisplay.appendChild(score)
+})
 
-    let RestartCondition = prompt("Would you like to play again? (y/n):")
-    if (RestartCondition === "y") {
-        location.reload()
-    } else {
-        console.log("Thank you for visiting idi0cy's rock paper scissors project.")
-    }
-}
+btnScissors.addEventListener('click', function(){
+    textDisplay.replaceChildren()
+    let scoreAdd = PlayRound(round, "s")
 
-PlayGame(round)
+    if (scoreAdd === "p"){
+        pScore = pScore + 1
+    } else if (scoreAdd === "c"){
+        cScore = cScore + 1
+    } 
+
+    let score = document.createElement("p")
+    score.classList.add("score")
+    score.textContent = "Player score: " + pScore + " | Computer score: " + cScore
+    textDisplay.appendChild(score)
+})
